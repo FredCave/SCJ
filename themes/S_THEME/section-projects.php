@@ -23,10 +23,27 @@
 								</a>
 
 								<?php the_field("text"); ?>
-								<?php if( get_field("additional_images") ): ?>
-									
-								<?php endif; ?>
 							</div>
+								<?php $image = get_field("cover_image");
+								if( !empty($image) ): 
+									$thumb = $image['sizes'][ "thumbnail" ];
+									$medium = $image['sizes'][ "medium" ];
+									$large = $image['sizes'][ "large" ];
+									?>
+									<img 
+										class="news_image lazyload" 
+										src="<?php echo $medium; ?>" 
+										width="<?php echo $width; ?>" 
+										height="<?php echo $height; ?>" 
+										data-srcset="<?php echo $large; ?> 800w, 
+											<?php echo $medium; ?> 600w, 
+											<?php echo $thumb; ?> 300w">
+									<noscript>
+										<img class="news_image" src="<?php echo $large; ?>">										
+									</noscript>
+								<?php endif; ?>
+																	
+							
 						</div>						
 					</li>
 				
@@ -95,7 +112,7 @@
 									$medium = $image['sizes'][ "medium" ];
 									$large = $image['sizes'][ "large" ];
 									?>
-									<img class="lazyload" src="<?php echo $thumb; ?>" data-gallery="<?php echo $large; ?>" data-srcset="<?php echo $large; ?> 800w, <?php echo $medium; ?> 600w, <?php echo $thumb; ?> 300w">	
+									<img class="lazyload" data-gallery="<?php echo $large; ?>" src="<?php echo $medium; ?>" data-srcset="<?php echo $large; ?> 800w, <?php echo $medium; ?> 600w, <?php echo $thumb; ?> 300w">
 									<noscript>
 										<img src="<?php echo $large; ?>">										
 									</noscript>
@@ -162,7 +179,14 @@
 									$width = $image['width'];
 									$height = $image['height'];
 									?>
-									<img class="lazyload" width="<?php echo $width; ?>" height="<?php echo $height; ?>" src="<?php echo $thumb; ?>" data-srcset="<?php echo $large; ?> 800w, <?php echo $medium; ?> 600w, <?php echo $thumb; ?> 300w">	
+									<img 
+										class="lazyload" 
+										src="<?php echo $medium; ?>" 
+										width="<?php echo $width; ?>" 
+										height="<?php echo $height; ?>" 
+										data-srcset="<?php echo $large; ?> 800w, 
+											<?php echo $medium; ?> 600w, 
+											<?php echo $thumb; ?> 300w">	
 									<noscript>
 										<img src="<?php echo $large; ?>">										
 									</noscript>
@@ -206,7 +230,7 @@
 				<li class="post post_video" id="<?php the_ID(); ?>">
 					
 					<div class="post_content">
-						
+						<?php the_field( "video_url" ); ?>
 					</div>
 
 				</li>	

@@ -14,7 +14,9 @@
 		<script type="text/javascript" src="<?php bloginfo("template_url"); ?>/js/jquery.visible.js"></script>	
 		<script type="text/javascript" src="<?php bloginfo("template_url"); ?>/js/jquery.fracs.js"></script>	
 		<script type="text/javascript" src="<?php bloginfo("template_url"); ?>/js/picturefill-background.js"></script>			
+		
 		<script type="text/javascript" src="<?php bloginfo("template_url"); ?>/js/custom.js"></script>
+		
 
 		<?php wp_head(); ?>
 		

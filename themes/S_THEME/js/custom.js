@@ -178,42 +178,6 @@ $(document).ready(function () {
 
     });
 
-
-/* DOCUMENTS */
-
-	// DETECT CLICK IN IFRAME
-
-	$('body', $("#docs_bg iframe").contents() ).click( function(e) {
-	 	console.log('Clicked! ' + event.pageX + ' - ' + event.pageY);
-	});
-
-	
-	function docCols() {
-		var winH = $(window).height();
-		var docH = $("#pdf_list").height();
-
-		if ( docH >= winH ) {
-			$("#pdf_list").css({
-				"width": "50%",
-				"column-count": "2",
-				"-webkit-column-count": "2"
-			});
-		} else {
-			$("#pdf_list").css({
-				"width": "",
-				"column-count": "",
-				"-webkit-column-count": ""
-			});			
-		}
-	}
-
-	docCols();
-
-	$(window).resize( function(){
-		docCols();	
-	});
-
-
 // PROJECT PAGE — INFO TO DOC FADE
 
 	var	winH = $(window).height(); 
@@ -316,7 +280,6 @@ $(document).ready(function () {
 
 			if ( thisH >= thisW ) {
 				// if portrait modify width
-				console.log( $(this).attr("src") + " is portrait" );
 				$(this).css("width", "33%");
 			} 
 
@@ -345,17 +308,22 @@ $(document).ready(function () {
 
 	// BACKGROUND IMAGE PIN — MANUAL METHOD
 
-	function manPin() {
+	function bgSize() {
 		$(".post_bg").each( function(){
-
 			var $bg = $(this).children(".bg"); // background to be animated
 			// bg set height
 			var thisW = $(this).width(); 
 			var windR = $(window).outerWidth() / $(window).outerHeight(); // windowRatio
 			$bg.css("height", (thisW / windR) + 10 );
-			var winH = $(window).height();
-			
+		});
+	}
 
+	bgSize();
+
+	function manPin() {
+		$(".post_bg").each( function(){
+			var $bg = $(this).children(".bg"); // background to be animated
+			var winH = $(window).height();
 			var posTop = $bg.offset().top; // top limit 
 			var thisH = $(this).height();
 			var posBot = posTop + thisH; // bottom limit		
@@ -383,6 +351,7 @@ $(document).ready(function () {
 						"opacity": "0"
 					});
 				}
+
 			});
 
 		});
@@ -390,9 +359,24 @@ $(document).ready(function () {
 
 	$(window).on( "load", function(){
 		manPin();
-	}).resize( manPin() );
+	}).resize( function(){
+		manPin();
+		bgSize();
+	});
 
 	// need a separate function for window resize
+
+	// VIDEO EMBED RESIZE
+
+	$(".post_video").each( function(){
+		$iFr = $(this).find("iframe");
+		var thisR = $iFr.attr("height") / $iFr.attr("width");
+		$(this).css( "height", ( thisR * $(window).width() ) );
+		$iFr.css({
+			"width": "100%",
+			"height": "100%"
+		});
+	});
 
 
 
