@@ -1,0 +1,1 @@
+/Users/Fred/SpiderOak Hive/htdocs/sylvain/wordpress/wp-content/plugins/query-monitor/wp-content/db.php
