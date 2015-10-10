@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html <?php language_attributes(); ?>>
+<html <?php language_attributes(); ?> style="margin-top:0">
 	<head>
 		<title>Sylvain Couzinet-Jacques</title>
 		<meta charset="UTF-8">
@@ -15,14 +15,8 @@
 		<script type="text/javascript" src="<?php bloginfo("template_url"); ?>/js/jquery.fracs.js"></script>	
 		<script type="text/javascript" src="<?php bloginfo("template_url"); ?>/js/picturefill-background.js"></script>			
 		
-		<script type="text/javascript" src="<?php bloginfo("template_url"); ?>/js/custom.js"></script>
-		
-
 		<?php wp_head(); ?>
 		
 	</head>
 	
 	<body>
-
-		<!-- HOVER ARROW -->
-		<div class="hover_arrow"></div>

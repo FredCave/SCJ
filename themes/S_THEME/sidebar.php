@@ -1,7 +1,19 @@
 <div id="header_bar">
 	<ul id="main_menu">
 
-		<li><a href="" id="index_toggle"><span>Index,</span></a></li>
+		<li>
+			<a href="" id="index_toggle">
+				<span class="lang">Index des projets,</span>
+				<span class="lang_en">Projects Index,</span>
+			</a>
+		</li>
+
+		<li>
+			<a href="#news">
+				<span class="lang">Actualités,</span>
+				<span class="lang_en">News,</span>
+			</a>
+		</li>
 
 		<li>
 			<a href="#documents">

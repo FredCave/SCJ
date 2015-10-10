@@ -109,42 +109,19 @@ $(document).ready(function () {
 			var target = $(this.hash);
 			target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
 			if (target.length) {
-				$('html,body').animate({
-					scrollTop: target.offset().top - 50
-				}, 1000);
+				//console.log(target.offset().top );
+				if ( target.selector === "#information" ) {
+					$('html,body').animate({
+						scrollTop: target.offset().top - 40 
+					}, 1000);					
+				} else {
+					$('html,body').animate({
+						scrollTop: target.offset().top - 80 
+					}, 1000);	
+				}
 				return false;
 			}
 		}
-	});
-
-// LANGUAGE TOGGLE
-
-	$(".lang_toggle span").on("click", function(){
-		if ( !$(this).hasClass("selected") ) {
-		
-			/* HEADER BAR ACTIONS */
-
-			// remove selected class from other button
-			$(".lang_toggle .selected").removeClass("selected");
-			// get language contained in class
-			var thisLang = $(this).attr("class");
-			thisLang = thisLang.split("_")[1];
-			// add selected class
-			$(this).addClass("selected");
-
-			/* PAGE ACTIONS */
-			
-			if ( thisLang == "en" ) {		
-				$(".lang").each( function(){
-					$(this).hide().siblings(".lang_en").show();		
-				});
-			} else {
-				$(".lang_en").each( function(){
-					$(this).hide().siblings(".lang").show();		
-				});
-			} // end of thisLang check
-
-		} // end of selected class check
 	});
 
 //  GRADIENTS 
@@ -178,100 +155,153 @@ $(document).ready(function () {
 
     });
 
-// PROJECT PAGE — INFO TO DOC FADE
+// LANGUAGE TOGGLE
 
-	var	winH = $(window).height(); 
-	
-	$(window).on("scroll", function(){
+	$(".lang_toggle span").on("click", function(){
+		if ( !$(this).hasClass("selected") ) {
 		
-		var scroll = $(window).scrollTop();
+			/* HEADER BAR ACTIONS */
 
-		$("#docs_bg").css("opacity", 1 - ( scroll / winH ) );
+			// remove selected class from other button
+			$(".lang_toggle .selected").removeClass("selected");
+			// get language contained in class
+			var thisLang = $(this).attr("class");
+			thisLang = thisLang.split("_")[1];
+			// add selected class
+			$(this).addClass("selected");
 
-		if ( $("#documents").fracs().visible > 0.67 ) {
-			$("#docs_bg").css({
-				"pointer-events":"auto",
-				"z-index": "1"
-			});
-		} else {
-			$("#docs_bg").css({
-				"pointer-events":"none",
-				"z-index": "-1"
-			});
-		}
+			/* PAGE ACTIONS */
+			
+			if ( thisLang == "en" ) {		
+				$(".lang").each( function(){
+					$(this).hide().siblings(".lang_en").show();		
+				});
+			} else {
+				$(".lang_en").each( function(){
+					$(this).hide().siblings(".lang").show();		
+				});
+			} // end of thisLang check
+
+		} // end of selected class check
 	});
+
+// VIDEO WRAPPER SETTINGS TO HIDE CONTROLS
+
+	function videoWrapper() {
+
+		var winW = $(window).width(); 
+		var winH = $(window).height();
+		var winR = winH / winW;
+		var video = $("#video_wrapper iframe");
+
+		// ratio of original video
+		var vidR = video.attr("height") / video.attr("width");
+		// ratio of iframe
+		var ifrR = video.height() / video.width();
+		// ifrR nedds to be 0.65
+
+		//var diff = winW / (winH / vidR);
+		if ( winR > vidR ) {
+			// diff between current video height and winH
+			var diff = winH / (winW * vidR);
+
+			var newW = winW * diff;
+			var newH = winW * diff * 0.65;
+
+			video.css({
+				"width": newW,
+				"margin-left": 0 - (newW - winW) / 2,
+				"margin-top": 0 - (newH - winH) / 2,
+				"height": newH
+			});
+		} else {			
+			video.css({
+				"width": winW,
+				"margin-left": "",
+				"margin-top": 0 - ( (winW * 0.65) - winH ) / 2,
+				"height": winW * 0.65
+			});			
+		}
+	}
+
+	videoWrapper();
+
+// MAIN CONTENT INFO
+
+	function infoCheck( scrollPos ) {
+		
+		$(".post").each( function(){			
+			// Check whether post is visible on screen
+			
+			var thisTop = $(this).offset().top;
+			var thisBot = thisTop + $(this).height();
+			var winH = $(window).height();
+			//console.log(thisTop, thisBot, winH);
+
+			if ( $(this).fracs().visible > 0 ) {
+				
+				if ( scrollPos >= thisTop && scrollPos <= thisBot - ( winH / 2 ) ) {
+					$(this).find(".post_info_toggle").show();	
+				} else {
+					$(this).find(".post_info_toggle").hide();
+				}
+			
+			} else {
+				$(this).find(".post_info_toggle").hide();
+			}
+
+		}); // NEEDS FIXING — OVERLAP
+	}
+	
+	$(".post_button").on( "click", function(e) {
+		e.preventDefault();
+		$(this).parents(".post_info_toggle").siblings(".post_text").toggle();
+	});
+
+	// INFO CLOSE
+
+	$(".post_text .close_button a").on( "click", function(e) {
+		e.preventDefault();
+		$(this).parents(".post_text").toggle();
+	});	
 
 
 // PROJECT PAGE — EXHIBITION POSTS
 
 	// PREPARE IMAGES
-	$(".exhibition_images img").each( function(){
-		$(this).css({
-			"opacity":"0",
-			"filter": "saturate(0.1)"
-		});
-	});
+	$(".exhibition_images img").css("visibility","hidden");
 
-	// CHECK WHEN IMAGES ENTER PAGE
-	$(window).scroll( function(){
+	// CHECK WHEN GALLERY SHOULD BE SHOWN
+	var expoGallery = function(){
 		$(".exhibition_images").each( function(){
 			var vis = $(this).fracs().visible;
-			// check if on page
-			if ( vis >= 0.1 ) {					
+			// Check if post is on page
+			if ( vis > 0.1 ) {					
 				$(".exhibition_gallery").show();
-
-				/*
-				// create array
-				var top, visList = [];
-
-				function getMaxOfArray(numArray) {
-				  return Math.max.apply(null, numArray);
-				}
-
-				// loop through images, return visibilty
-				$(this).find("img").each( function(){
-					var thisSrc = $(this).attr("src");
-					var thisVis = $(this).fracs().visible;
-					
-					// need to push both - key is src, value is visibility
-					visList[thisSrc] = thisVis;
-				});
-
-				top = getMaxOfArray( visList );
-				console.log("top = " + top);
-				// sort array by visibilty, top is put in gallery
-		
-					// check if image is partially visible
-					if ( $(".exhibition_images img").visible("true") ) {
-					
-					} 
-				*/
-					
 				$(this).find(".lazyloaded").each( function(){	
+					/*
+					NOT SHOWING ALL THE IMAGES
+					*/
 					var imgVis = $(this).fracs().visible;
-					
+					//console.log(imgVis);
 					if ( imgVis >= 0.8 ) {
 						var thisSrc = $(this).attr("data-gallery");
 						$(".exhibition_gallery").css("background-image", "url(" + thisSrc + ")");
-					} else {
-						
-					}
+					} 
 				});
-						
-
+			// Else hide gallery			
 			} else {
+				//console.log("not visible");
 				$(".exhibition_gallery").hide();
 			}
 		});		
-	});
-
-
+	}					
+				
 // PROJECT PAGE — PROJECT POSTS
 
-	// PORTRAIT LANDSCPAPE FILTER
-	// + VARY MARGIN LEFT
+	/* Prepare project images */
 
-	$(window).on("load", function(){
+	var projectImgs = function(){
 
 		$(".single_images img").each( function(){
 		
@@ -291,20 +321,21 @@ $(document).ready(function () {
 
 		});	
 
-	});
-
+	}
 
 	// IMAGE VISIBLE
 
-	$(window).scroll( function(){
-		$(".post_project img").each( function(){
+	/* Project images turn on and off as they enter and leave the window */
 
+	var imgVis = function(){
+		$(".post_project img").each( function(){
 			$(this).css("opacity","0");
+			$(".post_text .close_button img").css("opacity","1");
 			if ( $(this).fracs().visible > 0.25 ) {
 				$(this).css("opacity","1");
 			}
 		});	
-	});
+	}
 
 	// BACKGROUND IMAGE PIN — MANUAL METHOD
 
@@ -321,63 +352,80 @@ $(document).ready(function () {
 	bgSize();
 
 	function manPin() {
-		$(".post_bg").each( function(){
+		
+		var $scrollPos = $(window).scrollTop();
+		
+		$(".post_bg").each( function( ){
+			//console.log($scrollPos);
 			var $bg = $(this).children(".bg"); // background to be animated
 			var winH = $(window).height();
-			var posTop = $bg.offset().top; // top limit 
+			var posTop = $(this).offset().top; // top limit 
+			//console.log("posTop", posTop);
 			var thisH = $(this).height();
 			var posBot = posTop + thisH; // bottom limit		
-			var animStart = posTop - winH; // start 1vh before
-			var animEnd = posBot + (winH / 2); // end 0.5vh after
-			
-			$(window).scroll( function() {
-				var winScroll = $("body").scrollTop(); // current scroll position
-				if ( winScroll >= animStart && winScroll <= animEnd ) {
-					var opac = ( winScroll - animStart ) / winH ;				
-					if ( winScroll >= posBot ) {						
-						opac = ( animEnd - winScroll ) / ( winH / 2 );
-					}
-					
-					$bg.css({
-						"position": "fixed",
-						"top": "0",
-						"left": "0",
-						"opacity": opac
-					});
-					
-				} else {
-					$bg.css({
-						"position": "",
-						"opacity": "0"
-					});
-				}
+			//console.log($(this).attr("id"), "thisH: ", thisH, "posTop: ", posTop, "posBot: ", posBot);
 
-			});
+			var animStart = posTop - winH; // start 1vh before
+			var animEnd = posBot + winH; // end 0.5vh after
+		
+			if ( $scrollPos >= animStart && $scrollPos <= animEnd ) {
+				var opac = ( $scrollPos - animStart ) / winH ;				
+				if ( $scrollPos >= posBot ) {						
+					opac = ( animEnd - $scrollPos ) / ( winH / 2 );
+				}
+				
+				$bg.css({
+					"position": "fixed",
+					"top": "0",
+					"left": "0",
+					"opacity": opac
+				});
+				
+			} else {
+				$bg.css({
+					"position": "",
+					"opacity": "0"
+				});
+			}
 
 		});
 	}
 
-	$(window).on( "load", function(){
+// OPEN PDFS IN POPUP
+
+	$("#documents a").on("click", function(e){
+		e.preventDefault();
+		var href = $(this).attr("href");
+		var ifr = "<iframe class='pdf_viewer' src='" + href + "'></iframe>";
+		$("#pdf_wrapper iframe").remove();
+		$("#pdf_wrapper").append(ifr).css("display","inline-block");
+	});
+
+// CLOSE PDFS
+
+	$("#pdf_wrapper .close_button").on("click", function(e){
+		e.preventDefault();
+		$("#pdf_wrapper").hide();
+	});
+
+
+// WINDOW EVENTS
+
+	$(window).on( "load", function(){	
+		projectImgs();
 		manPin();
 	}).resize( function(){
 		manPin();
 		bgSize();
+		videoWrapper();	
+		projectImgs();
+	}).on( "scroll", function(){
+		var scrollPos = $(window).scrollTop();
+		//console.log( scrollPos );
+		infoCheck( scrollPos );
+		manPin();
+		expoGallery();
+		imgVis();
 	});
-
-	// need a separate function for window resize
-
-	// VIDEO EMBED RESIZE
-
-	$(".post_video").each( function(){
-		$iFr = $(this).find("iframe");
-		var thisR = $iFr.attr("height") / $iFr.attr("width");
-		$(this).css( "height", ( thisR * $(window).width() ) );
-		$iFr.css({
-			"width": "100%",
-			"height": "100%"
-		});
-	});
-
-
 
 });

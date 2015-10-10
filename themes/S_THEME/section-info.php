@@ -1,11 +1,10 @@
-<div id="information">
-	<div id="info_content">
+<div id="info_content">
 		<?php
 		query_posts( "pagename=information" );
 		while ( have_posts() ) : the_post(); ?>
 			
 			<div class="info_top">
-				<div class="info_field"><?php the_field("info_general"); ?></div>
+				<div class="info_field info_general"><?php the_field("info_general"); ?></div>
 				<div class="info_field"><?php the_field("info_education"); ?></div>
 			</div>
 			
@@ -46,5 +45,13 @@
 		endwhile;
 		wp_reset_query();
 		?>
-	</div>	
-</div><!-- end of #information -->
+	</div>
+
+	<!-- COLOPHON -->
+
+	<div id="colophon">
+		<p>Website Design — <a href="http://www.fredcave.com/" target="_blank">Fred Cave</a></p>
+		<p>© Sylain Couzinet-Jacques <?php the_date("Y"); ?></p>
+	</div>
+
+

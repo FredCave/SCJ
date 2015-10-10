@@ -1,49 +1,48 @@
-<!-- SPACER FOR DOCS IFRAME -->
+<ul>
+	<?php $args = array(
+		"post_type" => "documents",
+		"orderby" => "rand"
+	); ?>
+	<?php $theQuery = new WP_Query( $args ); ?>
+	<?php if ( $theQuery->have_posts() ) : ?>
+		<?php while ( $theQuery->have_posts() ) : $theQuery->the_post(); ?>    
+			<?php $cat_name = get_the_category(); ?>			
+						
+				<li class="doc" >
 
-<div id="documents">
-</div>
+					<?php 					
+					$file = get_field("file");
+					
+					$date_str = $file["date"]; // STRING
+					$the_date = DateTime::createFromFormat('Y-m-d H:i:s', $date_str);
+					
+					$filesize = filesize( get_attached_file( $file["id"] ) );
+					$kb = intval( $filesize / 1000 ) . " kb";											
+					?>
 
-<!-- DOCUMENT IFRAME -->
-
-<div id="docs_bg">
-	
-	<div id="pdf_list">
-		<ul>
-			<?php
-
-			$dir = '../Documents';
-			$scan = array_slice(scandir($dir ),2);
-			
-			foreach($scan as $file)
-			{		
-				//$file_size = filesize($dir.$file) / 1000;
-				//$kb = (int) $file_size; ?>
-			
-				<li>
-					<a target="_blank" href="">
-						<img src="<?php bloginfo('template_url'); ?>/img/pdf.png" />
-						<a target="_blank" href="">
-							<div class="pdf_info">
-								<div class="pdf_title"><?php echo $file; ?></div>
-								<div class="pdf_size"><?php /*echo $kb . " kb";*/ ?></div>
-							</div>
+					<div class="doc_img">
+						<a href="<?php echo $file['url'] ?>">
+							<img src="<?php bloginfo( 'template_url' ); ?>/img/pdf.png" />
 						</a>
-					</a>
-			    </li>	    
+					</div>
+
+					<div class="doc_text">
+
+						<div><?php the_title(); ?></div>
+
+						<div>
+							<span class="lang">Ajouté le </span>
+							<span class="lang_en">Uploaded the </span>
+							<?php echo $the_date->format('d-m-Y'); ?>
+						</div>
+
+						<div><?php echo $kb; ?></div>
+
+					</div>
+
+				</li>
 			
-			<?php
-				}
-			?>
-		</ul>
-	</div>
-	
-	<!--
-	<iframe src="http://couzinetjacques.com/documents/"></iframe>
-	
-	<div id="img_bckp" style="background-image:url('<?php bloginfo( "template_url" ); ?>/img/bg.png');background-size:cover;width:100%;height:100%;background-position:0px 0px;">
-	
-	</div>
-	-->
-	
-	
-</div>
+		<?php endwhile; ?>
+	<?php endif; 
+	wp_reset_postdata(); ?>
+</ul>
