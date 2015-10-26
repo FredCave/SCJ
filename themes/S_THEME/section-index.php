@@ -1,4 +1,4 @@
-<div id="list">
+<div class="list">
 
 	<ul>
 		<?php 
@@ -13,9 +13,9 @@
 					
 					<li class="list_post <?php echo $cat_name[0]->slug; ?>">
 						<a href="#<?php the_ID(); ?>">								
-							<span><?php the_title(); ?></span>
+							<span><?php the_title(); ?>, </span>
 						</a>
-					</li> <span class="dash">— </span> 
+					</li>
 					
 			<?php endwhile; ?>
 		<?php endif; ?>

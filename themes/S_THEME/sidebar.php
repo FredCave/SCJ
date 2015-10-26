@@ -1,28 +1,28 @@
-<div id="header_bar">
+<div id="header_bar" class="click_ignore">
 	<ul id="main_menu">
 
 		<li>
 			<a href="" id="index_toggle">
-				<span class="lang">Index des projets,</span>
-				<span class="lang_en">Projects Index,</span>
+				<span class="lang">Projets,</span>
+				<span class="lang_en">Projects,</span>
 			</a>
 		</li>
 
 		<li>
-			<a href="#news">
+			<a href="" id="doc_toggle">
+				<span>PDFs,</span> 
+			</a>
+		</li>
+
+		<li>
+			<a href="#news" id="news_toggle">
 				<span class="lang">Actualités,</span>
 				<span class="lang_en">News,</span>
 			</a>
 		</li>
 
 		<li>
-			<a href="#documents">
-				<span>PDFs,</span> 
-			</a>
-		</li>
-
-		<li>
-			<a href="#information">
+			<a href="#information" id="info_toggle">
 				<span class="lang">Informations,</span>
 				<span class="lang_en">Information,</span>
 			</a>
@@ -34,9 +34,15 @@
 
 	</ul>
 
-	<div id="index">
+	<div id="index" class="header_sub">
 
 		<?php require("section-index.php"); ?>
+
+	</div>
+
+	<div id="documents" class="header_sub">
+
+		<?php require("section-docs.php"); ?>
 
 	</div>
 
@@ -46,5 +52,14 @@
 	<a href="">
 		<img class="menu_open menu_button" src="<?php bloginfo('template_url'); ?>/img/menu_black.png" alt="menu open button"/>
 		<img class="menu_close menu_button" src="<?php bloginfo('template_url'); ?>/img/menu_close.png" alt="menu close button"/>
+	</a>
+</div>
+
+<!-- BACK TO TOP BUTTON -->
+
+<div class="post_info_toggle">
+	<a href="" class="top_button">
+		<span class="lang">Haut de la page</span>
+		<span class="lang_en">Back to Top</span>
 	</a>
 </div>

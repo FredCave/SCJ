@@ -12,7 +12,7 @@
 					<div class="news_content">						
 						
 						<div class="news_text">
-							<marquee class="post_title"><?php the_title(); ?></marquee>
+							<p class="news_title"><?php the_title(); ?></p>
 							<a href="#documents" class="top_button hide">
 								<span class="lang">Haut de la page</span>
 								<span class="lang_en">Back to Top</span>

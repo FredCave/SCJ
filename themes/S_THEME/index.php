@@ -2,13 +2,13 @@
 
 <?php get_sidebar(); ?>
 
+	<div id="top"></div><!-- ANCHOR FOR BACK TO TOP BUTTON -->
+
 	<!-- BACKGROUND VIDEO -->
 
 	<div id="video_wrapper">
 		
-		<img src="<?php bloginfo('template_url'); ?>/img/temp_bg.jpg" />
 		<iframe src="https://player.vimeo.com/video/140727766?autoplay=1&loop=1&title=0&byline=0&portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>	
-		<!--<iframe src="https://player.vimeo.com/video/135594181?autoplay=1&loop=1&title=0&byline=0&portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>-->	
 
 	</div>
 
@@ -35,41 +35,34 @@
 	<div id="pdf_wrapper"> 
 		<div class="close_button">
 			<a href="">
-				<img class="menu_close menu_button" src="<?php bloginfo('template_url'); ?>/img/menu_close_white.png" alt="menu close button"/>
+				<img class="menu_close menu_button" src="<?php bloginfo('template_url'); ?>/img/menu_close.png" alt="menu close button"/>
 			</a>
 		</div>
 	</div>
 
-	<!-- NEWS -->
+	<div id="info_wrapper" class="page_content">
 
-	<div id="news">
+		<!-- NEWS -->
 
-		<?php include("section-news.php"); ?>		
+		<div id="news" class="info_box">
+			<?php include("section-news.php"); ?>		
+		</div>
 
-	</div>
+		<!-- CV -->
 
-	<!-- PDFs -->
+		<div id="information" class="info_box"> 
+			<?php include("section-info.php"); ?>
+		</div>
 
-	<div id="documents">
-		
-		<?php include("section-docs.php"); ?>
-				
-	</div>
+	</div><!-- end of #info_wrapper -->
 
 	<!-- MAIN CONTENT -->
 
-	<div id="content_wrapper">
+	<div id="content_wrapper" class="page_content">
 
 		<?php include("section-projects.php"); ?>
 
 	</div>
 
-	<!-- CV -->
-
-	<div id="information"> 
-
-		<?php include("section-info.php"); ?>
-
-	</div>
 
 <?php get_footer(); ?>
