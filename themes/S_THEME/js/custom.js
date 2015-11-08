@@ -185,31 +185,22 @@ $(document).ready(function () {
 
 //  GRADIENTS 
 
-	var mX, mY, distance, sens,
-    $TL  = $('#marker_tl'),
-    $TR  = $('#marker_tr'),
-    $BL  = $('#marker_bl'),
-    $BR  = $('#marker_br');
-
-    function calculateDistance(elem, mouseX, mouseY) {
-        return Math.floor(Math.sqrt(Math.pow(mouseX - (elem.offset().left+(elem.width()/2)), 2) + Math.pow(mouseY - (elem.offset().top+(elem.height()/2)), 2)));
-    }
-
     $(document).mousemove(function(e) {  
-		sens = 300; // lower = less sensitive
-		mX = e.pageX;
-		mY = e.pageY;
-		distanceTL = calculateDistance($TL, mX, mY) / sens;
-		$("#layer1").animate({ opacity: 1 - distanceTL },{queue:false,duration:200,easing:'linear'});
-								
-		distanceTR = calculateDistance($TR, mX, mY) / sens;
-		$("#layer2").animate({ opacity: 1 - distanceTR },{queue:false,duration:200,easing:'linear'});
-					
-		distanceBL = calculateDistance($BL, mX, mY) / sens;
-		$("#layer3").animate({ opacity: 1 - distanceBL },{queue:false,duration:200,easing:'linear'});
+		
+    	var r = 0 + e.pageX / 2,
+    		g = 125 - e.pageX / 2,
+    		b = 255 - e.clientY / 2;
 
-		distanceBR = calculateDistance($BR, mX, mY) / sens;  
-		$("#layer4").animate({ opacity: 1 - distanceBR },{queue:false,duration:200,easing:'linear'});
+		$('#gradient').css({
+			"top" : e.pageY - $(document).scrollTop(),
+			"left" : e.pageX,
+		    "background" : "-moz-radial-gradient(center, ellipse cover, rgba(" + r + "," + g + "," + b + ",1) 0%, rgba(255, 255, 255, 0) 50%)",
+		    "background" : "-webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(" + r + "," + g + "," + b + ",1)), color-stop(50%, rgba(255, 255, 255, 0)))",
+		    "background" : "-webkit-radial-gradient(center, ellipse cover, rgba(" + r + "," + g + "," + b + ",1) 0%, rgba(255, 255, 255, 0) 50%)",
+		    "background" : "-o-radial-gradient(center, ellipse cover, rgba(" + r + "," + g + "," + b + ",1) 0%, rgba(255, 255, 255, 0) 50%)",
+		    "background" : "-ms-radial-gradient(center, ellipse cover, rgba(" + r + "," + g + "," + b + ",1) 0%, rgba(255, 255, 255, 0) 50%)",
+		    "background" : "radial-gradient(ellipse at center, rgba(" + r + "," + g + "," + b + ",1) 0%, rgba(255, 255, 255, 0) 50%)"
+		});
 
     });
 
@@ -308,8 +299,23 @@ $(document).ready(function () {
 
 // MAIN CONTENT — LAZY LOADING
 
+	// Set lazysizes buffer size
+	window.lazySizesConfig = window.lazySizesConfig || {};
+	window.lazySizesConfig.expand = 800;
+
 	// Create array where loaded ids will be stored
 	var loaded = [];
+
+	var initLoaded = false;
+	function initLoad () {
+		if ( !initLoaded ) {
+			var thisId = $(".post").eq(0).attr("id");
+			postLoad( thisId );
+			// add post to loaded array
+			loaded.push(thisId);
+			initLoaded = true;
+		}	
+	}
 
 	var defineTriggers = function( scrollPos ){
 		$(".post").each( function(){			
@@ -321,7 +327,6 @@ $(document).ready(function () {
 			if ( scrollPos > thisTop && arrayCheck === -1 ) {
 				// load function
 				postLoad( thisId );
-				console.log("load", thisId);
 				// add post to loaded array
 				loaded.push(thisId);
 			}
@@ -330,8 +335,9 @@ $(document).ready(function () {
 
 	// Load function
 	var postLoad = function( thisId ){
+		// console.log(thisId);
 		$.get("./single.php", "p=" + thisId, function (response) {
-			$("#"+thisId).html(response);
+			$("#"+thisId).find(".post_content").html(response);
 		}).done(function () {
 			projectImgs();
 			$("#"+thisId).addClass("post_loaded");	
@@ -358,14 +364,14 @@ $(document).ready(function () {
 	function manPin( scrollPos ) {
 				
 		$(".post").each( function( ){
-			var $bg = $(this).children(".bg"); // background to be animated
+			var $bg = $(this).find(".bg"); // background to be animated
 			var winH = $(window).height();
 			var posTop = $(this).offset().top; // top limit 
 			var thisH = $(this).height();
 			var posBot = posTop + thisH; // bottom limit		
 
-			var animStart = posTop - winH; // start 1vh before
-			var animEnd = posBot + winH; // end 0.5vh after
+			var animStart = posTop - ( winH * 1.5 ); // start 1vh before
+			var animEnd = posBot + winH; // end 1vh after
 		
 			if ( scrollPos >= animStart && scrollPos <= animEnd ) {
 				var opac = ( scrollPos - animStart ) / winH ;				
@@ -414,56 +420,61 @@ $(document).ready(function () {
 
 	}
 
-// MAIN CONTENT — IMAGES TURN ON AND OFF AS THEY ENTER AND LEAVE THE WINDOW
-
-	var imgVis = function(){
-		$(".post").find(".single_images img").not(".nominals img").each( function(){
-			$(this).css("opacity","0");
-			$(".post_text .close_button img").css("opacity","1");
-			if ( $(this).fracs().visible > 0.33 ) {
-				$(this).css("opacity","1");
-			}
-		});	
-	}
-
 // MAIN CONTENT — EXHIBITION GALLERY
 
-	// CHECK WHEN GALLERY SHOULD BE SHOWN
-	var expoGallery = function(){
-		$(".post").find(".exhibition_images").each( function(){
-			
-			// Create object
-			var exhImgs = [];
+	// CLICK IMAGE TO SCROLL DOWN
+	$("#gallery_click").on("click", function(e){
+		//var current = $(this).attr("data-current");
+		alert("current");
+		e.preventDefault();
+	});
 
-			var vis = $(this).fracs().visible;
-			// Check if post is on page
-			if ( vis > 0.1 ) {					
-				$(".exhibition_gallery").show();
-				var index = 0;
-				$(this).find("img").each( function(){					
-					// Push key / value pair to array
-					exhImgs.push({
-					    key: index,
-					    value: $(this).fracs().visible
-					});		
-							
-					index++;
-				});
-				// Sort array by value
-				exhImgs = exhImgs.sort(function (a, b) {
-				    return b.value - a.value;
-				});
-				var indexVis = exhImgs[0].key;
+	// GALLERY SHOW
+	function galleryShow() {		
+		$(".exhibition_gallery").hide();
+		
+		$(".post_content").each( function(){
+			if ( $(this).is(":onScreen") && !$(this).hasClass("nominals") ) {
+				$(this).find(".exhibition_gallery").show();
+				imageShow( $(this) );
+			} 			
+		});
+	}
 
-				// add image to gallery using current picturefill src
-				var thisSrc = $(this).find("#"+indexVis)[0].currentSrc;
-				$(".exhibition_gallery").css("background-image", "url(" + thisSrc + ")");
-				
-			// Else hide gallery			
-			} else {
-				$(".exhibition_gallery").hide();
-			}
-		});		
+	// IMAGE SHOW
+
+	function imageShow( thisPost ) {
+		
+		// Create object
+		var exhImgs = [];
+
+		var index = 0;
+		var postId = thisPost.parent(".post").attr("id");
+
+		thisPost.find(".single_images img").each( function(){					
+			// Push key / value pair to array
+			exhImgs.push({
+			    key: index,
+			    value: $(this).fracs().visible
+			});								
+			index++;
+		});
+		// Sort array by value
+		exhImgs = exhImgs.sort(function (a, b) {
+		    return b.value - a.value;
+		});
+		
+		var indexVis = postId + "-" + exhImgs[0].key;
+
+		// add image to gallery using current picturefill src
+		var thisSrc = thisPost.find("#"+indexVis)[0].currentSrc;
+		// Safari fallback
+		if ( !thisSrc ) {
+			thisSrc = thisPost.find("#"+indexVis).attr("src");
+		}
+
+		$(".exhibition_gallery").css("background-image", "url(" + thisSrc + ")").attr("data-current",indexVis);
+
 	}
 
 // MAIN CONTENT — PROJECT INFO
@@ -471,13 +482,11 @@ $(document).ready(function () {
 	// LINKS BOTTOM RIGHT
 
 	var infoCheck = function ( scrollPos ) {
-		
 		$(".post").each( function(){			
 			
 			var thisTop = $(this).offset().top;
 			var thisBot = thisTop + $(this).height();
 			var winH = $(window).height();
-
 			if ( $(this).fracs().visible > 0 ) {
 				
 				if ( scrollPos >= thisTop && scrollPos <= thisBot - ( winH / 2 ) ) {
@@ -515,23 +524,25 @@ $(document).ready(function () {
 	    }
 	});
 
+
 // WINDOW EVENTS
 
 	$(window).on( "load", function(){	
-
+		setTimeout( function(){
+			initLoad();			
+		}, 2000 );
 	}).on( "resize", function(){
-
 		videoWrapper();	
 		infoWrapperH();
-
+		bgSize();
 	}).on( "scroll", function(){
 		var scrollPos = $(window).scrollTop();
+		initLoad();
 		revealTopButton( scrollPos );
 		defineTriggers( scrollPos );
-		imgVis();
 		infoCheck( scrollPos );
-		expoGallery();
 		manPin( scrollPos );
+		galleryShow();
 	});
 
 });

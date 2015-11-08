@@ -1,26 +1,24 @@
 <?php $cat_name = get_the_category(); ?>
-		
-<!-- BACKGROUND IMAGE -->
-<?php $image = get_field("cover_image"); ?>
-<div class="bg" style="background-image:url('<?php echo $image["url"]; ?>')"></div>
 
-<div class="post_content">
+<!-- INFO TOGGLE BUTTON -->
+<div class="post_info_toggle">
+	<a href="" class="post_button click_ignore">
+		<?php the_title(); ?> — info 
+	</a>
+	<span class="post_info_space">&nbsp;</span>
+</div>
 
-	<!-- INFO TOGGLE BUTTON -->
-	<div class="post_info_toggle">
-		<a href="" class="post_button click_ignore">
-			<?php the_title(); ?> — info 
-		</a>
-		<span class="post_info_space">&nbsp;</span>
-	</div>
+<!-- INFO BOX -->
+<div class="post_text info_box click_ignore">
 
-	<!-- INFO BOX -->
-	<div class="post_text info_box click_ignore">
+	<div class="post_scroll">
 
 		<span><?php the_title(); ?></span>
 
 		<br>
 
+		<?php the_field("info"); ?>
+		<?php the_field("info"); ?>
 		<?php the_field("info"); ?>
 
 		<?php the_field("tech_info"); ?>
@@ -38,67 +36,52 @@
 			</ul>
 		</div>
 
-	</div><!-- end of .post_text -->
+	</div>
 
-	<!-- IMAGES -->
+	<div class="clear"></div>
 
-	<?php if( $cat_name[0]->slug == "exhibition" ): ?>
+</div><!-- end of .post_text -->
 
-		<div class="exhibition_images" data-exhibition="<?php the_ID(); ?>">
+<!-- IMAGES -->
 
-	<?php else: ?>
+<div class="single_images">
 
-		<?php if ( $post->post_name === "outstanding-nominals" ) { ?>
+	<?php $index = 0; ?>
 
-			<div class="single_images nominals">
+	<?php while ( have_rows('additional_images') ) : the_row(); ?>
 
-		<?php } else { ?>
+		<?php $image = get_sub_field('image');
+		if( !empty($image) ): 
+			$thumb = $image['sizes'][ "thumbnail" ];
+			$medium = $image['sizes'][ "medium" ];
+			$large = $image['sizes'][ "large" ];
+			$width = $image['width'];
+			$height = $image['height'];
+			?>
 
-			<div class="single_images">
+			<img id="<?php echo the_ID() . "-" . $index; ?>" 
+				class="lazyload"
+				data-src="<?php echo $thumb; ?>" 
+				width="<?php echo $width; ?>" 
+				height="<?php echo $height; ?>" 
+				data-sizes="auto" 
+				data-srcset="<?php echo $large; ?> 1280w, 
+					<?php echo $medium; ?> 800w, 
+					<?php echo $thumb; ?> 300w" />
 
-		<?php } ?>
+			<noscript>
+				<img src="<?php echo $large; ?>">										
+			</noscript>
 
-	<?php endif; ?>
+		<?php endif; ?>
 
-		<?php $index = 0; ?>
+		<?php $index++; ?>
 
-		<?php while ( have_rows('additional_images') ) : the_row(); ?>
+	<?php endwhile; ?>
 
-			<?php $image = get_sub_field('image');
-			if( !empty($image) ): 
-				$thumb = $image['sizes'][ "thumbnail" ];
-				$medium = $image['sizes'][ "medium" ];
-				$large = $image['sizes'][ "large" ];
-				$width = $image['width'];
-				$height = $image['height'];
-				?>
+</div><!-- end of images -->
 
-				<img id="<?php echo $index; ?>" 
-					class="lazyload"
-					data-gallery="<?php echo $large; ?>"  
-					src="<?php echo $medium; ?>" 
-					width="<?php echo $width; ?>" 
-					height="<?php echo $height; ?>" 
-					data-srcset="<?php echo $large; ?> 800w, 
-						<?php echo $medium; ?> 600w, 
-						<?php echo $thumb; ?> 300w" />	
-
-				<noscript>
-					<img src="<?php echo $large; ?>">										
-				</noscript>
-
-			<?php endif; ?>
-
-			<?php $index++; ?>
-
-		<?php endwhile; ?>
-
-	</div><!-- end of images -->
-
-	<?php if( $cat_name[0]->slug == "exhibition" ) { ?>
-
-		<div class="exhibition_gallery"></div>
-
-	<?php } ?>
-
-</div><!-- end of .post_content -->
+<div class="exhibition_gallery">
+	<a href="" id="gallery_click">	
+	</a>
+</div>

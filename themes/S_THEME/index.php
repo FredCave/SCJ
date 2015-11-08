@@ -9,26 +9,12 @@
 	<div id="video_wrapper">
 		
 		<iframe src="https://player.vimeo.com/video/140727766?autoplay=1&loop=1&title=0&byline=0&portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>	
-
+		
 	</div>
 
 	<!-- GRADIENTS -->
 
-	<div id="gradients">
-
-		<div id="layer1" class="layer"></div>
-		<div id="layer2" class="layer"></div>
-		<div id="layer3" class="layer"></div>
-		<div id="layer4" class="layer"></div>
-
-		<!-- MARKERS -->
-
-		<div id="marker_tl" class="marker"></div>
-	    <div id="marker_tr" class="marker"></div>
-	    <div id="marker_bl" class="marker"></div>
-	    <div id="marker_br" class="marker"></div>
-
-	</div>
+	<div id="gradient"></div>
 
 	<!-- IFRAME POPUP -->
 

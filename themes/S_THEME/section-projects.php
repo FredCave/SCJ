@@ -9,7 +9,24 @@
 			<?php $cat_name = get_the_category(); ?>
 			
 				<li class="post" id="<?php the_ID(); ?>">
-					<!-- CONTENT IS LOADED HERE -->
+					
+					<!-- BACKGROUND IMAGE -->
+					<?php $image = get_field("cover_image"); ?>
+					<div class="bg" style="background-image:url('<?php echo $image["url"]; ?>')"></div>
+
+					<?php if ( $post->post_name === "outstanding-nominals" ) { ?>
+
+						<div class="post_content nominals">
+
+					<?php } else { ?>
+
+						<div class="post_content">
+
+					<?php } ?>
+
+							<!-- .POST_CONTENT LOADED HERE -->
+						</div>
+
 				</li>
 
 		<?php endwhile; ?>
