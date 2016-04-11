@@ -1,3 +1,33 @@
+<!-- TMP: IFRAME POPUP  -->
+
+	<!-- IFRAME POPUP -->
+
+	<div id="pdf_wrapper"> 
+		<div class="close_button">
+			<a href="">
+				<img class="menu_close menu_button" src="<?php bloginfo('template_url'); ?>/img/menu_close.png" alt="menu close button"/>
+			</a>
+		</div>
+	</div>
+
+	<div id="info_wrapper" class="page_content">
+
+		<!-- NEWS -->
+
+		<div id="news" class="info_box">
+			<?php include("includes/section-news.php"); ?>		
+		</div> 
+
+		<!-- CV -->
+
+		<div id="information" class="info_box"> 
+			<?php include("includes/section-info.php"); ?>
+		</div>
+
+	</div><!-- end of #info_wrapper -->
+
+
+
 <div class="list">
 
 	<ul>

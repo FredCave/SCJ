@@ -44,7 +44,16 @@
 
 <!-- IMAGES -->
 
-<div class="single_images">
+<?php if( $cat_name[0]->slug == "exhibition" ): ?>
+
+	<div class="exhibition_images" data-exhibition="<?php the_ID(); ?>">
+
+<?php else: ?>
+
+	<!--<div class="single_images">-->
+	<div class="single_images">
+
+<?php endif; ?>
 
 	<?php $index = 0; ?>
 
@@ -81,7 +90,20 @@
 
 </div><!-- end of images -->
 
+<script>
+	// Don't know why this only works here
+	/*
+	function imageNext() {
+		var current = $(".exhibition_gallery").attr("data-current").split("-");
+		var plusOne = parseInt( current[1] ) + 1;
+		var offset = $("#" + current[0] + "-" + plusOne ).offset().top;
+		$('html,body').animate({
+			scrollTop: offset
+		}, 500);
+	}
+	*/
+
+</script>
+
 <div class="exhibition_gallery">
-	<a href="" id="gallery_click">	
-	</a>
 </div>
