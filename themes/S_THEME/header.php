@@ -17,4 +17,7 @@
 	</head>
 	
 	<body>
-		<div id="top"></div><!-- ANCHOR FOR BACK TO TOP BUTTON -->
+
+	<!-- GRADIENTS -->
+	<div id="gradient">
+	</div>
