@@ -5,7 +5,8 @@ function enqueue_scj_scripts() {
     wp_register_script( 'jquery', '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js');
     wp_enqueue_script( 'jquery' );
 
-	  wp_enqueue_script('lazysizes', get_template_directory_uri() . '/js/lazysizes.min.js', array('jquery'), true);
+	wp_enqueue_script('underscore', get_template_directory_uri() . '/js/underscore.min.js', array('jquery'), true);
+	wp_enqueue_script('lazysizes', get_template_directory_uri() . '/js/lazysizes.min.js', array('jquery'), true);
 
 }
 add_action('wp_enqueue_scripts', 'enqueue_scj_scripts');

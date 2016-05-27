@@ -86,10 +86,10 @@ img {
 #gradient {
     position: fixed;
     top: 50%;
-    margin-top: -100vw;
+    margin-top: -100vh;
     margin-left: -100vw;
     width: 200vw;
-    height: 200vw;
+    height: 200vh;
     background: #000;
     background: -moz-radial-gradient(center, ellipse cover, black 0%, rgba(255, 255, 255, 0) 50%);
     background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, black), color-stop(50%, rgba(255, 255, 255, 0)));
@@ -111,26 +111,28 @@ img {
 ************************************************/
 
 #info_wrapper {
-    width: 100%;
-    background-color: white;
-    min-height: 800px;
-    min-height: 100vh;
-    height: auto;
+    position: absolute;
     -webkit-filter: blur(5px);
     filter: blur(5px);
     transition: -webkit-filter 2s;
+}
+
+.info {
+    width: 100%;
+    background-color: white;
+    height: auto;
     margin-bottom: 120px;
 }
 
-#info > div {
+.info > div {
     margin: 2% 2% 2.5% 4%;
 }
 
-#info_links p {
+.info_links p {
     margin: 2% 2% 2.5% 0%;
 }
 
-#info_expo_solo {
+.info_expo_solo {
 /*    margin-top: 2.5% !important;*/
 }
 
@@ -145,24 +147,27 @@ img {
     margin-bottom: 2%;
 }
 
-#info_documents {
+.info_documents {
 /*    border: 1px solid red;*/
     width: auto;
 /*    display: inline-block;*/
 }
 
-#info_documents_toggle {
+.info_documents_toggle {
 /*    border: 1px solid purple;*/
     display: inline-block;
+    border-bottom: 1px solid black;
 }
 
 .toggle_hover:hover {
     color: blue;
+    border-bottom: 1px solid blue;
     cursor: pointer;
 }
 
-#info_documents_list {
+.info_documents_list {
 /*    border: 1px solid green;*/
+    padding-top: 4px;
     max-height: 0;
     height: auto;
     transition: max-height 1s;
@@ -170,90 +175,43 @@ img {
 }
 
 /************************************************
-    SLOW
+    IMAGES
 ************************************************/
 
 #images_wrapper {
 /*    border: 1px solid purple;*/
     width: 100%;
-    background-color: white;
-    height: 800px;
-    height: 100vh;
-/*    -webkit-filter: blur(5px);
-    filter: blur(5px);*/
+    height: auto;
     overflow: hidden;
-    position: relative;
-}
-
-.bg_image li {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-}
-
-.bg_image li {
-    opacity: 0;
-    background-size: cover;
-    background-position: center;  
-    transition: opacity 10s; 
-}
-
-.bg_image li.visible {
-    opacity: 1;
-}
-
-.main_images {
-/*    border: 1px solid green;*/
     position: absolute;
     z-index: 999;
-    text-align: center;
-    overflow-y: scroll;
-    height: auto;
+    top: 0;
+/*    display: none;*/
+    padding-top: 50vh;
+    pointer-events: none;
 }
 
 .main_images li {
 /*    border: 1px solid purple;*/
-    display: block;
-    width: 50%;
-    height: auto;
-    margin: 0 auto 48px auto;
-}
-
-.main_images li img {
-/*    border: 1px solid red;*/
+/*    position: fixed;*/
     width: 100%;
-    height: auto;
+    height: 100vh;
 }
 
-.blur {
-/*    border: 1px solid blue;*/
+.main_images img {
+/*    border: 1px dashed green;*/
     position: fixed;
-    z-index: 9999;
-    top: 20%;
-    left: 30%;
-    width: 300px;
-    height: 300px;
-    border-radius: 150px;
+    width: 50%;
+    top: 24px;
+    left: 24px;
+    height: auto;
+    opacity: 0;
+    pointer-events: auto;
 /*    -webkit-filter: blur(5px);
     filter: blur(5px);*/
-    box-shadow: 3px 3px 15px black;
-    background-image: url("http://localhost:8888/sylvain/wordpress/wp-content/uploads/2015/08/26-1280x1280.jpg");
-    background-position: 0 0;
-    background-attachment: fixed;
 }
 
-.poly {
-/*    border: 1px solid red;*/
-    position: absolute; /* absolute or fixed positioning required */
-    -webkit-clip-path: polygon(50% 0%, 100% 0%, 100% 100%, 60% 100%);
-    height: 100%;
-    height: 100vh;
-    top: 0;
-    width: 100%;
-    background-image: url("http://localhost:8888/sylvain/wordpress/wp-content/uploads/2015/08/26-1280x1280.jpg");
-    background-position: 0 0;
-    background-attachment: fixed;
-    -webkit-filter: blur(5px);
-    filter: blur(5px);
+.main_images img.portrait {
+    width: 33%;
 }
 

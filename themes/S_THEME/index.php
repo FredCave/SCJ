@@ -11,6 +11,6 @@
 	<?php include( "includes/info.php" ); ?>
 	
 	<!-- IMAGES -->
-	<?php /* include( "includes/images.php" ); */ ?>
+	<?php include( "includes/images.php" ); ?>
 
 <?php get_footer(); ?>

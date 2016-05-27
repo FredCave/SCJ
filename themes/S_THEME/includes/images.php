@@ -52,13 +52,20 @@
 					if ( have_rows("main_images") ) :
 						while ( have_rows("main_images") ) : the_row(); 
 							$image = get_sub_field("image");
-							$thumb = $image['sizes'][ "thumbnail" ];
-							$medium = $image['sizes'][ "medium" ];
-							$large = $image['sizes'][ "large" ];
-							$full = $image['url'];
+							$thumb = $image["sizes"]["thumbnail"];
+							$medium = $image["sizes"]["medium"];
+							$large = $image["sizes"]["large"];
+							$full = $image["url"];
+							$width = $image["sizes"]["thumbnail-width"];
+							$height = $image["sizes"]["thumbnail-height"];
+							if ( $height > $width ) {
+								$class = "portrait";
+							} else {
+								$class = "landscape";
+							}
 							?>
-							<li>
-								<img class="lazyload" 
+							<li data-marker="">
+								<img class="lazyload <?php echo $class; ?>" 
 								data-sizes="auto" 
 							    data-src="<?php echo $thumb; ?>"
 							    data-srcset="<?php echo $thumb; ?> 300w,
@@ -75,9 +82,6 @@
 			endif;
 
 
-
-
-
 		endwhile;
 	endif;
 
@@ -87,12 +91,8 @@
 
 	</div>
 
-	<?php 
-	/*
-	<div class="blur">
+	<div class="blur hide">
 
 	</div>
-	*/
-	?>
 
 </div><!-- END OF #IMAGES_WRAPPER -->
