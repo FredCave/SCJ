@@ -1,5 +1,8 @@
 <?php get_header(); ?>
 
+	<div id="debug" class="hide">
+	</div>
+
 	<!-- GRADIENTS -->
 	<div id="gradient" class="">
 	</div>
