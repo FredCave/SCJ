@@ -134,13 +134,13 @@ img {
     opacity: 0;
     transition: opacity 40s, background-color 1s;
     z-index: 99; 
-    filter: saturate(70%);
     -webkit-filter: saturate(70%);
+            filter: saturate(70%);
     pointer-events: none;
 }
 
 .gradient_vis {
-    opacity: 1 !important;
+    opacity: 0.8 !important;
 }
 
 /************************************************
@@ -181,12 +181,14 @@ img {
 }
 
 .info p {
-    margin: 0% 2% 8px 0%;
+    margin: 0% 2% 4px 0%;
     opacity: 1;
 }
 
 .indent {
-    text-indent: 4em;
+    margin-left: 4em !important;
+    border-bottom: 1px solid black;
+    display: inline-block;
 }
 
 .info_links p {

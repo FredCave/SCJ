@@ -1,11 +1,13 @@
 <div id="info_wrapper" data-height="0">
 	<div id="info_original" class="" data-scroll="0">
+		<div class="info">
 		<?php 
-			$info_query = new WP_Query( "name=info" );
-			if ( $info_query->have_posts() ) :
-				while ( $info_query->have_posts() ) : $info_query->the_post(); ?>
-					<div class="info">
-						<?php 
+			// LOOP TWICE
+			for ( $x = 0; $x < 2; $x++ ) {
+				// MAIN LOOP
+				$info_query = new WP_Query( "name=info" );
+				if ( $info_query->have_posts() ) :
+					while ( $info_query->have_posts() ) : $info_query->the_post();
 						// INFO FIELDS - REPEATER
 						if ( get_field( "info_fields" ) ) { ?>
 							<div>
@@ -66,6 +68,9 @@
 					<div class="line">
 						<img src="<?php bloginfo( 'template_url' ); ?>/img/line.svg" />
 					</div>
+
+					<?php } // END OF FOR LOOP
+					?>
 
 				</div><!-- END OF .INFO -->	
 		</div><!-- END OF #INFO_WRAPPER -->

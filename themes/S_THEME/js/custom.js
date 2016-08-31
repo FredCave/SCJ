@@ -8,7 +8,7 @@ $(document).ready(function () {
 
 	// INFO FOCUS
 	function infoFocus () {
-		console.log("infoFocus");
+		// console.log("infoFocus");
 		$("#info_wrapper").css({
 			"-webkit-filter" : "blur(0px)",
 					"filter" : "blur(0px)"
@@ -16,7 +16,7 @@ $(document).ready(function () {
 	}
 
 	function infoBlur () {
-		console.log("infoBlur");
+		// console.log("infoBlur");
 		$("#info_wrapper").css({
 			"-webkit-filter" : "",
 					"filter" : ""
@@ -50,6 +50,14 @@ $(document).ready(function () {
 		}, 10000 );
 	}
 
+		// HIDE GRADIENT IF ANDROID
+	var ua = navigator.userAgent.toLowerCase();
+	var isAndroid = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");
+	console.log( ua, isAndroid );
+	if(isAndroid) {
+		$("#gradient").hide();
+	}
+
 	// DOCS TOGGLE
 	function pdfShow ( click ) {
 		console.log("pdfShow");
@@ -68,21 +76,25 @@ $(document).ready(function () {
 
 		// SET INFO HEIGHT TO IMAGES HEIGHT
 	function setInfoH () {
-		console.log("setInfoH", $("#images_wrapper").outerHeight(), $("#info_wrapper").height() );
-		$("#info_wrapper").css({
-			"height" : $("#images_wrapper").outerHeight(),
-			"overflow" : "hidden"
+		console.log("setInfoH");
+		// WAIT UNTIL IMAGES HAVE LOADED
+		$("#images_wrapper").imagesLoaded( function() {
+			console.log("setInfoH", $("#images_wrapper").outerHeight(), $("#info_wrapper").height() );
+			$("#info_wrapper").css({
+				"height" : $("#images_wrapper").outerHeight(),
+				"overflow" : "hidden"
+			});
+			// RUN REPEAT INFO FUNCTION
+			repeatInfo();
+			// RECORD INFOH AS ATTRIBUTE
+			$("#info_wrapper").attr( "data-height", $("#images_wrapper").outerHeight() );	
 		});
-		// RUN REPEAT INFO FUNCTION
-		repeatInfo();
-		// RECORD INFOH AS ATTRIBUTE
-		$("#info_wrapper").attr( "data-height", $("#images_wrapper").outerHeight() );
 	}
 
 		// REPEAT INFO WRAPPER
 	function repeatInfo () {
 		console.log("repeatInfo");
-		// CALCULATE NO. OF TIMES INOF CAN BE REPEATED
+		// CALCULATE NO. OF TIMES INFO CAN BE REPEATED
 		var infoH = $("#info_original").outerHeight(),
 			lastH = parseInt( $("#info_wrapper").attr( "data-height" ) );
 		console.log( 88, $("#images_wrapper").outerHeight(), lastH );
@@ -127,17 +139,23 @@ $(document).ready(function () {
 	// IMAGES SCROLL MARKERS
 
 		// ASSIGN SCROLL MARKERS 
+	var markersAssigned = false;
 	function assignMarkers () {
 		console.log("assignMarkers");
 		$("#images_wrapper li").each( function(i){
 			// console.log( $(this).offset().top );
 			$(this).attr( "data-marker", $(this).offset().top );
 		});
+		markersAssigned = true;
 	}
 
 		// MARKER CHECK ON SCROLL
 	function markerCheck ( scroll ) {
-		console.log("markerCheck");
+		// console.log("markerCheck");
+		// IF MARKERS NOT ASSIGNED
+		if ( !markersAssigned ) {
+			return false;
+		}
 		// IF IMAGES ARE NOT HIDDEN
 		if ( !$("#images_wrapper").hasClass("images_hidden") ) {
 			$("#images_wrapper li").each( function() {
@@ -159,14 +177,14 @@ $(document).ready(function () {
 		} else {
 			// SHOW CLOSE BUTTON
 			$("#images_close").show();
-			console.log("Close visible.");
+			// console.log("Close visible.");
 			// $("#debug").css("background-color","red").text( scroll + ", " + $("#images_wrapper li:first-child").attr("data-marker") + ", " + $("#images_close").is(":visible") );
 		}
 	}
 
 		// CHECK IF IMAGES ARE VISIBLE
 	function imgVisCheck () {
-		console.log("imgVisCheck");
+		// console.log("imgVisCheck");
 		var imgVis = false;
 		$("#images_wrapper img").each( function (i) {
 			if ( $(this).css("opacity") == 1 ) {
@@ -253,6 +271,12 @@ $(document).ready(function () {
 
 	var scrollPos;
 	$(window).on( "load", function () {
+		
+		// RESET SCROLL
+		$("html, body").animate({
+			scrollTop : 0	
+		}, 10 );
+
 		gradientInit();
 		posImgs();
 		setInfoH();
